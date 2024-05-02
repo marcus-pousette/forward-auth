@@ -1,0 +1,61 @@
+{
+	"private": true,
+	"name": "org",
+	"author": "marcus-pousette",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/marcus-pousette/push-auth"
+	},
+	"license": "Apache-2.0",
+	"type": "module",
+	"workspaces": [
+		"packages/*"
+	],
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"reset": "aegir run clean && aegir clean interop/node_modules packages/**/node_modules node_modules package-lock.json packages/*/package-lock.json interop/*/package-lock.json",
+		"test": "aegir run test",
+		"test:node": "aegir run test:node",
+		"test:chrome": "aegir run test:chrome",
+		"test:chrome-webworker": "aegir run test:chrome-webworker",
+		"test:firefox": "aegir run test:firefox",
+		"test:firefox-webworker": "aegir run test:firefox-webworker",
+		"test:electron-main": "aegir run test:electron-main",
+		"test:cli": "aegir run test:cli",
+		"test:interop": "aegir run test:interop",
+		"test:docs": "aegir run test --roots ./docs",
+		"coverage": "aegir run coverage",
+		"build": "aegir run build",
+		"clean": "aegir run clean",
+		"lint": "aegir run lint",
+		"lint:fix": "aegir run lint --fix",
+		"dep-check": "aegir run dep-check",
+		"doc-check": "aegir run doc-check",
+		"release": "run-s build docs:no-publish npm:release docs",
+		"npm:release": "aegir exec --bail false npm -- publish",
+		"release:rc": "aegir release-rc",
+		"deploy": "yarn deploy:docs && yarn deploy:example",
+		"deploy:docs": "yarn docs && gh-pages --dist docs --dotfiles",
+		"fmt": "prettier --write '{*,**/*}.{js,ts,jsx,tsx,json,vue}'",
+		"postinstall": "patch-package && mkdir -p node_modules/chai-extend && cp chai-global.js node_modules/chai-extend/chai-global.js && echo '{\"type\": \"module\"}' > node_modules/chai-extend/package.json"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.42.1",
+		"@types/benchmark": "^2.1.5",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "^20.2.5",
+		"@types/wicg-file-system-access": "^2023.10.4",
+		"aegir": "github:marcus-pousette/aegir#multiple-assets",
+		"benchmark": "^2.1.4",
+		"chai-as-promised": "^7.1.1",
+		"dotenv": "^16.0.3",
+		"gh-pages": "^5.0.0",
+		"mocha": "^10.4.0",
+		"sinon": "^17.0.1",
+		"typescript": "^5.4.4",
+		"patch-package": "^8.0.0"
+	},
+	"version": "0.0.0"
+}

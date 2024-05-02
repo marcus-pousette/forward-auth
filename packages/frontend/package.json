@@ -1,0 +1,45 @@
+{
+    "name": "web-client",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "start": "vite",
+        "start-https": "vite",
+        "start-remote": "vite --mode staging --config vite.config.remote.ts",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "deploy": "yarn build && NODE_DEBUG=gh-pages gh-pages -d dist"
+    },
+    "dependencies": {
+        "@peerbit/react": "^0.0.9",
+        "verified-emails" : "^0.0.1",
+        "react": "^18.3.1",
+        "@protobufjs/float": "^1.0.2"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.3",
+        "postcss": "^8.4.38",
+        "autoprefixer": "^10.4.19",
+        "@types/react": "^18.2.46",
+        "@types/react-dom": "^18.2.18",
+        "@vitejs/plugin-react": "^4",
+        "typescript": "^5.3.3",
+        "vite": "5.0.12"
+    },
+    "browserslist": {
+        "production": [
+            "chrome >= 67",
+            "edge >= 79",
+            "firefox >= 68",
+            "opera >= 54",
+            "safari >= 14"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}

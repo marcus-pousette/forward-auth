@@ -1,0 +1,61 @@
+diff --git a/node_modules/@dao-xyz/borsh/lib/esm/binary.js b/node_modules/@dao-xyz/borsh/lib/esm/binary.js
+index d033513..0fab205 100644
+--- a/node_modules/@dao-xyz/borsh/lib/esm/binary.js
++++ b/node_modules/@dao-xyz/borsh/lib/esm/binary.js
+@@ -1,6 +1,6 @@
+ import { toBigIntLE, writeBufferLEBigInt, writeUInt32LE, readUInt32LE, readUInt16LE, writeUInt16LE, readBigUInt64LE, readUIntLE, checkInt, writeBigUint64Le } from './bigint.js';
+ import { BorshError } from "./error.js";
+-import utf8 from '@protobufjs/utf8';
++import { write, read, length } from '@protobufjs/utf8';
+ import { readFloatLE, writeFloatLE, readDoubleLE, writeDoubleLE } from '@protobufjs/float';
+ const allocUnsafeFn = () => {
+     if (globalThis.Buffer) {
+@@ -13,18 +13,18 @@ const writeStringBufferFnFn = () => {
+     if (globalThis.Buffer) {
+         return (length) => {
+             if (length < 48)
+-                return utf8.write;
++                return write;
+             return (string, buf, offset) => buf.write(string, offset);
+         };
+     }
+-    return () => utf8.write;
++    return () => write;
+ };
+ const writeStringBufferFn = writeStringBufferFnFn();
+ const stringLengthFn = () => {
+     if (globalThis.Buffer) {
+         return (globalThis.Buffer).byteLength;
+     }
+-    return utf8.length;
++    return length;
+ };
+ export class BinaryWriter {
+     constructor() {
+@@ -132,7 +132,7 @@ export class BinaryWriter {
+         writer.totalSize += 4 + len;
+     }
+     static stringCustom(str, writer, lengthWriter = writeUInt32LE, lengthSize = 4) {
+-        const len = utf8.length(str);
++        const len = length(str);
+         let offset = writer.totalSize;
+         writer._writes = writer._writes.next = () => {
+             lengthWriter(len, writer._buf, offset);
+@@ -340,7 +340,7 @@ export class BinaryReader {
+             throw new BorshError("Error decoding UTF-8 string: Invalid length");
+         }
+         try {
+-            const string = utf8.read(reader._buf, reader._offset, end);
++            const string = read(reader._buf, reader._offset, end);
+             reader._offset = end;
+             return string;
+         }
+@@ -380,7 +380,7 @@ export class BinaryReader {
+             throw new BorshError("Error decoding UTF-8 string: Invalid length");
+         }
+         try {
+-            const string = utf8.read(reader._buf, reader._offset, end);
++            const string = read(reader._buf, reader._offset, end);
+             reader._offset = end;
+             return string;
+         }
