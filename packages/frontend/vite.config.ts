@@ -25,6 +25,7 @@ export default defineConfig({
             },
         },
     },
+    base: "/forward-auth/",
     define: {
         APP_VERSION: JSON.stringify(process.env.npm_package_version),
     },
