@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router";
-import { App } from "./l";
+import { App } from "./App";
 
 export const getNameFromPath = (name: string) => decodeURIComponent(name);
 

@@ -1,6 +1,6 @@
 {
     "name": "push-auth-email-server",
-    "version": "0.0.1",
+    "version": "0.0.4",
     "description": "SMTP Email server + Verified credentials publishing",
     "type": "module",
     "sideEffects": false,
@@ -57,7 +57,7 @@
     "dependencies": {
         "smtp-server": "^3.13.4",
         "mailparser": "^3.7.1",
-        "verified-emails": "^0.0.1"
+        "forward-auth-verified-emails": "^0.0.2"
     },
     "devDependencies": {
         "@types/smtp-server": "^3.5.10",

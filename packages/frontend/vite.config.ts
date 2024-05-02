@@ -3,21 +3,18 @@ import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [    react()],
+    plugins: [react()],
     optimizeDeps: {
         esbuildOptions: {
             target: "esnext",
-            
-    
+
+
         },
         include: ["@protobufjs/float", "@protobufjs/utf8"],
         exclude: ["@peerbit/any-store"],
     },
     build: {
-     /*    target: "esnext",
-        commonjsOptions: {
-            include: ["@protobufjs/float"],
-          } */
+        target: "esnext"
     },
     define: {
         APP_VERSION: JSON.stringify(process.env.npm_package_version),

@@ -2,6 +2,7 @@ import { field, variant, deserialize } from '@dao-xyz/borsh';
 import { Program } from '@peerbit/program'
 import { ByteMatchQuery, Documents, SearchRequest, Sort, StringMatch } from '@peerbit/document'
 import { sha256Sync, Ed25519PublicKey } from '@peerbit/crypto'
+import { concat } from 'uint8arrays'
 
 @variant(0) // v0
 export class Email {
@@ -16,17 +17,17 @@ export class Email {
     publicKey: Uint8Array
 
     @field({ type: 'string' })
-    email: string
+    body: string
 
-    constructor(data: { email: string, publicKey: Ed25519PublicKey, from: string }) {
-        this.id = sha256Sync(new TextEncoder().encode(data.email))
+    constructor(data: { body: string, publicKey: Ed25519PublicKey, from: string }) {
+        this.id = sha256Sync(concat([new TextEncoder().encode(data.from), data.publicKey.bytes, new TextEncoder().encode(data.body)]));
         this.from = data.from
         this.publicKey = data.publicKey.bytes
-        this.email = data.email
+        this.body = data.body
     }
 }
 
-@variant("verified-emails") // v0
+@variant("forward-auth-verified-emails") // v0
 export class VerifiedEmailStore extends Program {
 
     @field({ type: Documents })
@@ -34,7 +35,7 @@ export class VerifiedEmailStore extends Program {
 
     constructor() {
         super()
-        this.emails = new Documents<Email>({ id: sha256Sync(Buffer.from("verified-emails")) })
+        this.emails = new Documents<Email>({ id: sha256Sync(new TextEncoder().encode("forward-auth-verified-emails")) })
     }
 
     async open(args?: any): Promise<void> {

@@ -26,11 +26,11 @@ export const start = async (props: { onMessage: (message: parser.ParsedMail) => 
             console.log("Received mail", data)
         }
     })
-    let port = 2525
+    let port = 25
     server.listen(port)
 
     // print server info
-    console.log('Server running at port 2525')
+    console.log('Server running at port 25')
 
     return { stop: () => { server.close(); }, port }
 }

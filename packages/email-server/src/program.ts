@@ -1,6 +1,6 @@
 import { Program, type ProgramEvents } from '@peerbit/program'
 import { field, variant } from '@dao-xyz/borsh'
-import { VerifiedEmailStore, Email } from 'verified-emails'
+import { VerifiedEmailStore, Email } from 'forward-auth-verified-emails'
 import { start as startEmailServer } from './smtp.js'
 
 @variant("email-server")
@@ -21,7 +21,7 @@ export class EmailServerAndCredentialIssuer extends Program {
             onMessage: async (message) => {
                 console.log("GOT MESSAGE")
                 const email = message.from!.value[0].address!
-                await this.emails.add(new Email({ email, publicKey: this.node.identity.publicKey, from: email }))
+                await this.emails.add(new Email({ body: message.html || "", publicKey: this.node.identity.publicKey, from: email }))
             }
         })
         await this.emails.open()

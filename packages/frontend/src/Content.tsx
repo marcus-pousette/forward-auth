@@ -1,7 +1,9 @@
-import { usePeer, useProgram } from "@peerbit/react"
+import { usePeer } from "@peerbit/react"
 import { useEffect, useState } from "react";
 import { Ed25519Keypair } from "@peerbit/crypto";
-import { generateEmailBody, VerifiedEmailStore } from "verified-emails";
+import { EmailClaim, generateEmailBody } from "forward-auth-verified-emails";
+import { Explore } from "./Explore";
+import { serialize } from '@dao-xyz/borsh';
 
 export const Spinner = () => (
     <svg
@@ -26,7 +28,7 @@ export const Spinner = () => (
 export const Content = () => {
 
     const { peer, loading } = usePeer()
-    const [mailtoRecipent, setMailtoRecpient] = useState<string>("verify@peerbit.org")
+    const [mailtoRecipent, setMailtoRecpient] = useState<string>("help@verify.giga.place")
     const [messageBody, setMessageBody] = useState<string>('')
 
     useEffect(() => {
@@ -45,18 +47,21 @@ export const Content = () => {
         fn()
     }, [peer?.identity?.publicKey?.hashcode()])
 
-    return <div className="w-full h-screen">
+    return <div className="w-full h-screen p-2">
         {/*   Show loading spinner if loading is true, else show content */}
         {loading && <div className="w-full h-full flex justify-center items-center">
             <Spinner />
         </div>}
 
-        {!loading && <div className="w-full h-12 flex flex-row">
-            <a className="ml-auto" href={`mailto:${mailtoRecipent}?subject=I would like to authenticate myself&body=--------- Signature ---------%0D%0A${messageBody}%0D%0A---------------------------------`} >
-                <button className=" btn-elevated p-2" >
-                    Register
-                </button>
-            </a>
+        {!loading && <div className="flex flex-col">
+            <div className="w-full h-12 flex flex-row">
+                <a className="ml-auto" href={`mailto:${mailtoRecipent}?subject=I would like to authenticate myself&body=Don't modify this email!%0D%0A%0D%0A%0D%0A${messageBody}`} >
+                    <button className="btn-elevated p-2" >
+                        Register
+                    </button>
+                </a>
+            </div>
+            <Explore />
         </div>
         }
     </div>

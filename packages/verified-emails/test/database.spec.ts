@@ -10,8 +10,8 @@ describe('Database', () => {
     beforeEach(async () => {
         client = await Peerbit.create()
         store = await client.open(new VerifiedEmailStore())
-        await store.add(new Email({ email: 'first', from: "a@b.c", publicKey: client.identity.publicKey }))
-        await store.add(new Email({ email: 'second', from: "e@f.g", publicKey: (await Ed25519Keypair.create()).publicKey }))
+        await store.add(new Email({ body: 'first', from: "a@b.c", publicKey: client.identity.publicKey }))
+        await store.add(new Email({ body: 'second', from: "e@f.g", publicKey: (await Ed25519Keypair.create()).publicKey }))
 
     })
 
