@@ -1,6 +1,7 @@
 import { PeerProvider } from "@peerbit/react";
-import { Content } from "./Content";
+import { BaseRoutes } from "./routes";
 document.documentElement.classList.add("dark");
+import { HashRouter } from "react-router-dom";
 
 export const App = () => {
     return (
@@ -10,7 +11,9 @@ export const App = () => {
             waitForConnnected={true}
             bootstrap={["/dns4/d43dcad6997c733b34b34e9e4f68f1b274ee6876.peerchecker.com/tcp/4003/wss/p2p/12D3KooWDJpmpRxEfeSr7EBYci31VrjvMHp9GLhpv9211eXcchNf"]}
         >
-            <Content />
+            <HashRouter basename="/">
+                <BaseRoutes />
+            </HashRouter>
         </PeerProvider>
     );
 };

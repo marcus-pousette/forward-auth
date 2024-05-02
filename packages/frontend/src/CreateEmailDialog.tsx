@@ -3,11 +3,10 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
 import { serialize } from '@dao-xyz/borsh'
-import { Ed25519Keypair, Ed25519PublicKey, X25519Keypair, DecryptedThing, toBase64 } from '@peerbit/crypto'
+import { Ed25519Keypair, Ed25519PublicKey, X25519Keypair, DecryptedThing, toBase64URL } from '@peerbit/crypto'
+import { createEncryptedMessage } from './email';
 
-const START_ENCRYPTED_MESSAGE = "___START_ENCRYPTED_MESSAGE___"
-const END_ENCRYPTED_MESSAGE = "___END_ENCRYPTED_MESSAGE___"
-const NEWLINE = "%0D%0A"
+
 export const CreateEmailDialog = (props: { recipent: string, recipentKeys: Ed25519PublicKey[], open: boolean, setOpen: (value: boolean) => void }) => {
     const [subject, setSubject] = useState("A secret message")
     const [messageBody, setMessageBody] = useState("Hello!")
@@ -19,10 +18,7 @@ export const CreateEmailDialog = (props: { recipent: string, recipentKeys: Ed255
         const fn = async () => {
 
             const kp = peer.identity as Ed25519Keypair // TODO  check types
-            const xkp = await X25519Keypair.from(kp)
-            const decryptedMessage = new DecryptedThing({ data: new TextEncoder().encode(messageBody) })
-            const encryptedMessage = await decryptedMessage.encrypt(xkp, props.recipentKeys)
-            setEncryptedBody(`${START_ENCRYPTED_MESSAGE}${NEWLINE}${toBase64(serialize(encryptedMessage))}${NEWLINE}${END_ENCRYPTED_MESSAGE}`)
+            setEncryptedBody(await createEncryptedMessage(messageBody, kp, props.recipentKeys))
         }
         fn()
 
