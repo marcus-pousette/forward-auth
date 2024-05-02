@@ -14,7 +14,8 @@ export default defineConfig({
         exclude: ["@peerbit/any-store"],
     },
     build: {
-        target: "esnext"
+        target: "esnext",
+        outDir: '../../docs'
     },
     define: {
         APP_VERSION: JSON.stringify(process.env.npm_package_version),
